@@ -6,37 +6,52 @@ import {
   store,
 } from 'reefjs';
 
-import javascriptLogo from './javascript.svg';
+import router from './routes';
+
+router
+  .add(/about/, () => {
+    appData.name = 'About';
+    console.log('welcome in about page');
+  })
+  .add(/products\/(.*)\/specification\/(.*)/, (id, specification) => {
+    appData.name = 'Data';
+    console.log(`products: ${id} specification: ${specification}`);
+  })
+  .add('', () => {
+    appData.name = 'Home';
+    console.log('welcome in catch all controller');
+  });
 
 // document.querySelector('#app').innerHTML 
 const temp1 = () => `
   <div class="container">
-    <a href="https://vitejs.dev" target="_blank">
+    <a href="#/">
       <img src="/vite.svg" class="logo" alt="Vite logo" />
     </a>
-    <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" target="_blank">
-      <img src="${javascriptLogo}" class="logo vanilla" alt="JavaScript logo" />
+    <a href="#/about">
+    <img src="/vite.svg" class="logo" alt="Vite logo" />
     </a>
+    <a href="/#/products/12/specification/10"><img src="/vite.svg" class="logo" alt="Vite logo" /></a>
     <h1>Hello Vite!</h1>
     <p><strong>${appData.greeting}, ${appData.name}!</strong></p>
+    ${appData.name !== 'About' ? `
     <div class="card">
       <button id="counter" type="button">Count is ${appData.count}</button>
     </div>
     <p class="read-the-docs">
       Click on the Vite logo to learn more
-    </p>
+    </p>` : ``}
   </div>
 `;
 
 
 
-// let {store, component} = reef;
 
-// Create a reactive appData store
 let appData = store({
-	greeting: 'Hello',
-	name: 'World',
-  count: 0
+	greeting: 'Nwp-Studio',
+	name: 'Start',
+  count: 0,
+  route_id: 0,
 });
 
 
@@ -57,16 +72,13 @@ function run() {
 }
 
 document.addEventListener("click", ClickHandler);
-document.addEventListener('reef:render', function (event) {
-	console.log('The UI was just updated inside this element.');
-	console.log(event.target);
+// document.addEventListener('reef:render', function (event) {
+// 	console.log('The UI was just updated inside this element.');
+// 	console.log(event.target);
 
-});
+// });
 window.addEventListener('DOMContentLoaded', () => {
   console.log("DOMContentLoaded");
   run();
 });
 
-setTimeout(function () {
-  appData.greeting = "Nwp-Studio";
-}, 5000);
